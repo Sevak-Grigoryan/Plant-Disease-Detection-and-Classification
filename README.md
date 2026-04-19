@@ -1,63 +1,39 @@
 # Plant Disease Classification Project
 
-A complete deep-learning pipeline for multi-class plant disease classification, including:
-- data preprocessing and split validation,
-- multiple model baselines (EfficientNet, GoogLeNet, MobileNetV3),
-- a DINOv2 + LoRA advanced model,
-- and a FastAPI web app for inference.
+This repo is my end-to-end take on classifying plant diseases from leaf photos. It covers everything from cleaning the data to training a few different models, comparing them, and serving the best one through a small FastAPI web app.
 
-This repository is organized so you can move from data preparation to training, benchmarking, and deployment in one place.
+The models I tried: EfficientNet, GoogLeNet, MobileNetV3, CLIP + LoRA, and DINOv2 + LoRA.
 
 ## 1) Project Overview
 
-- Task: Multi-class image classification of plant diseases.
-- Number of classes: 40.
-- Input image size: 224 x 224.
-- Final prepared split (`train_ready_data`):
-  - Train: 6000 images
-  - Validation: 1288 images
-  - Test: 1284 images
-- Data leakage check (train/val/test): 0 overlaps.
-
-Source: `train_ready_data/preprocessing_report.json`.
+It's a 40-class image classification problem, with all images resized to 224 x 224. After cleaning and splitting, the final dataset has 6000 training images, 1288 for validation, and 1284 for testing — with no overlap between any of the splits (full breakdown in [`train_ready_data/preprocessing_report.json`](train_ready_data/preprocessing_report.json)).
 
 ## 2) Data & Preprocessing
 
-### Raw data
+The raw image folders aren't in git — together they're around 2.6 GB, which is too big for GitHub. They come from public plant-disease datasets (PlantVillage, PlantDoc, and a few related ones) that I merged into a single 40-class setup.
 
-Raw image folders (`data/`, `plant_data_clean/`, `Resized_Data/`, `train_ready_data/`) are **not** tracked in git — they total ~2.6 GB and exceed GitHub's file-size limits. They are produced from public plant-disease datasets (PlantVillage, PlantDoc, and related leaf-disease collections), consolidated into a unified 40-class schema.
-
-To reproduce the pipeline locally, either:
-- Place the raw per-class folders under `data/train` and `data/val`, then run the notebook below, or
-- Download the prepared final split directly (see "Prepared split download" further down) and skip preprocessing.
+If you want to reproduce things locally, you have two options: either drop the raw class folders into `data/train` and `data/val` and run the notebook, or grab the already-prepared split (see below) and skip straight to training.
 
 ### `Data_Processing.ipynb`
 
-All data cleaning and split construction is performed in the root-level notebook [`Data_Processing.ipynb`](Data_Processing.ipynb). It is the single entry point that turns the raw sources into the `train_ready_data/` directory consumed by every training script.
+All the cleaning happens in [`Data_Processing.ipynb`](Data_Processing.ipynb) at the repo root. Running it top-to-bottom does roughly this:
 
-The notebook performs, in order:
-
-1. **Class-name normalization** — lower-case, underscore-separated, unified 40-class taxonomy across heterogeneous source datasets (e.g. merging equivalent labels and resolving naming inconsistencies).
-2. **Deduplication & leakage prevention** — perceptual-hash / file-hash based duplicate removal across `train` / `val` / `test` so no image appears in more than one split. The final leakage check is logged in `preprocessing_report.json` (reported overlaps: `0`).
-3. **Per-class cleaning** — removes corrupted, zero-byte, or non-image files; drops classes that fall below a minimum sample threshold.
-4. **Resizing** — all images resized to `224 x 224` (model input size) and written to `Resized_Data/`.
-5. **Stratified splitting** — produces the final `train_ready_data/{train,val,test}/<class>/` structure with per-class balance preserved:
-   - Train: **6000**
-   - Validation: **1288**
-   - Test: **1284**
-6. **Reporting** — writes `train_ready_data/preprocessing_report.json` with per-step counts, class distribution, and the leakage check result.
-
-### Running the notebook
+- normalizes class names into one consistent 40-class taxonomy,
+- removes duplicates across train/val/test using image hashing (final overlap check: 0),
+- throws away corrupted or empty files and drops classes that are too small,
+- resizes everything to 224 x 224 into `Resized_Data/`,
+- builds the stratified `train_ready_data/{train,val,test}/<class>/` split,
+- writes a `preprocessing_report.json` with all the counts.
 
 ```powershell
 jupyter notebook Data_Processing.ipynb
 ```
 
-Run the cells top-to-bottom. Expected output is a populated `train_ready_data/` directory plus `preprocessing_report.json`. After this, every `train.py` in the project can be launched directly — they resolve paths relative to the repo root.
+Once that's done, any `train.py` in the repo will just work — they all resolve paths from the repo root.
 
 ### Prepared split download
 
-Because the data is excluded from git, a mirrored copy of the final `train_ready_data/` split will be made available on Hugging Face Datasets / Kaggle (links to be added after upload). Place the downloaded folder at the repo root so it sits at `./train_ready_data/`.
+Since the data isn't in git, I'll be uploading a mirror of the final `train_ready_data/` split to Hugging Face / Kaggle (links coming once it's up). Just drop the folder at the repo root as `./train_ready_data/`.
 
 ## 3) Structured Repository Layout
 
