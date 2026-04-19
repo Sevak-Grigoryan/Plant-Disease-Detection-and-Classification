@@ -57,12 +57,12 @@ Run the cells top-to-bottom. Expected output is a populated `train_ready_data/` 
 
 ### Prepared split download
 
-Because the data is excluded from git, a mirrored copy of the final `train_ready_data/` split will be made available on Hugging Face Datasets / Kaggle (links to be added after upload). Place the downloaded folder at the repo root so it sits at `plant_project/train_ready_data/`.
+Because the data is excluded from git, a mirrored copy of the final `train_ready_data/` split will be made available on Hugging Face Datasets / Kaggle (links to be added after upload). Place the downloaded folder at the repo root so it sits at `./train_ready_data/`.
 
 ## 3) Structured Repository Layout
 
 ```text
-plant_project/
+.
 |-- README.md
 |-- requirements.txt
 |-- Data_Processing.ipynb
@@ -174,12 +174,8 @@ python SOTA/EfficientNET/train.py
 
 ### GoogLeNet
 
-`SOTA/GoogleNET/train.py` uses a relative `DATA_ROOT` that expects execution from inside `SOTA/GoogleNET`.
-
 ```powershell
-Set-Location SOTA/GoogleNET
-python train.py
-Set-Location ../..
+python SOTA/GoogleNET/train.py
 ```
 
 ### MobileNetV3
