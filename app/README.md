@@ -4,9 +4,9 @@ This is a small web app that takes a picture of a leaf and tells you which
 plant disease it has (40 classes). It uses my fine-tuned DINOv2-Large + LoRA
 model, pulled straight from Hugging Face.
 
-- **UI:** [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
-- **API docs:** [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
-- **Health check:** [http://127.0.0.1:8000/health](http://127.0.0.1:8000/health)
+- **UI:** [http://127.0.0.1:8010/](http://127.0.0.1:8010/)
+- **API docs:** [http://127.0.0.1:8010/docs](http://127.0.0.1:8010/docs)
+- **Health check:** [http://127.0.0.1:8010/health](http://127.0.0.1:8010/health)
 
 ## Before you start: the model is big
 
@@ -31,19 +31,19 @@ From the project root:
 python -m venv .venv
 .venv\Scripts\activate
 pip install -r app/requirements.txt
-python -m uvicorn app.app:app --host 127.0.0.1 --port 8000
+python -m uvicorn app.app:app --host 127.0.0.1 --port 8010
 ```
 
 The first run will spend a while downloading the model. Just let it finish.
 
 Once it says `Application startup complete.`, open
-**http://127.0.0.1:8000/** in your browser, drop in a leaf photo, and click
+**http://127.0.0.1:8010/** in your browser, drop in a leaf photo, and click
 Predict.
 
 ## Checking it's ready
 
 If predictions are giving you 503 errors, check
-**http://127.0.0.1:8000/health**. You'll see something like:
+**http://127.0.0.1:8010/health**. You'll see something like:
 
 ```json
 {"status":"ok","model_loaded":true,"device":"cpu","classes_count":40,"error":null}
@@ -54,12 +54,12 @@ If predictions are giving you 503 errors, check
 
 ## Using the API directly
 
-Full interactive docs: **http://127.0.0.1:8000/docs**
+Full interactive docs: **http://127.0.0.1:8010/docs**
 
 Quick example with curl:
 
 ```powershell
-curl -X POST "http://127.0.0.1:8000/api/predict?top_k=3" -F "file=@leaf.jpg"
+curl -X POST "http://127.0.0.1:8010/api/predict?top_k=3" -F "file=@leaf.jpg"
 ```
 
 You get back the top class, its confidence, and the top-k runners-up.

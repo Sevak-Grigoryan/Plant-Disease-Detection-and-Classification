@@ -12,12 +12,6 @@ It's a 40-class image classification problem, with all images resized to 224 x 2
 
 The raw image folders aren't in git — together they're around 2.6 GB, which is too big for GitHub.
 
-<<<<<<< HEAD
-If you want to reproduce things locally, you have two options: either drop the raw class folders into `data/train` and `data/val` and run the notebook, or grab the already-prepared split (see below) and skip straight to training.
-=======
-If you want to reproduce things locally, you have two options: either drop the raw class folders into `data/train` and `data/val` and run the notebook, or grab the already-prepared split and skip straight to training.
->>>>>>> 0e2dac4a7793860b859166e2115535d009ea955f
-
 ### `Data_Processing.ipynb`
 
 All the cleaning happens in [`Data_Processing.ipynb`](Data_Processing.ipynb) at the repo root. Running it top-to-bottom does roughly this:
@@ -34,13 +28,6 @@ jupyter notebook Data_Processing.ipynb
 ```
 
 Once that's done, any `train.py` in the repo will just work — they all resolve paths from the repo root.
-<<<<<<< HEAD
-
-### Prepared split download
-
-Since the data isn't in git, I'll be uploading a mirror of the final `train_ready_data/` split to Hugging Face / Kaggle (links coming once it's up). Just drop the folder at the repo root as `./train_ready_data/`.
-=======
->>>>>>> 0e2dac4a7793860b859166e2115535d009ea955f
 
 ## 3) Structured Repository Layout
 
@@ -199,10 +186,10 @@ python VIT/CLIP/train.py
 ## 7) Run the Inference Web App
 
 ```powershell
-python -m uvicorn app.app:app --reload --host 127.0.0.1 --port 8000
+python -m uvicorn app.app:app --reload --host 127.0.0.1 --port 8010
 ```
 
-Open: `http://127.0.0.1:8000`
+Open: `http://127.0.0.1:8010`
 
 
 ## 8) Key Takeaways
