@@ -6,7 +6,7 @@ The models I tried: EfficientNet, GoogLeNet, MobileNetV3, CLIP + LoRA, and DINOv
 
 ## 1) Project Overview
 
-It's a 40-class image classification problem, with all images resized to 224 x 224. After cleaning and splitting, the final dataset has 6000 training images, 1288 for validation, and 1284 for testing — with no overlap between any of the splits (full breakdown in [`train_ready_data/preprocessing_report.json`](train_ready_data/preprocessing_report.json)).
+It's a 40-class image classification problem, with all images resized to 224 x 224. After cleaning and splitting, the final dataset has 6000 training images, 1288 for validation, and 1284 for testing — with no overlap between any of the split
 
 ## 2) Data & Preprocessing
 
