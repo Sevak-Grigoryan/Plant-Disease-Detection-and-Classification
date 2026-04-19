@@ -205,7 +205,6 @@ python -m uvicorn app.app:app --reload --host 127.0.0.1 --port 8000
 
 Open: `http://127.0.0.1:8000`
 
-Detailed app usage is documented in `app/README.md`.
 
 ## 8) Key Takeaways
 
