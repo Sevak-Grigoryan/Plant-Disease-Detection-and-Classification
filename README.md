@@ -65,6 +65,7 @@ Because the data is excluded from git, a mirrored copy of the final `train_ready
 .
 |-- README.md
 |-- requirements.txt
+|-- Academic_Report.pdf
 |-- Data_Processing.ipynb
 |-- app/
 |   |-- app.py
