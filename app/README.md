@@ -1,4 +1,4 @@
-# Plant Disease Classifier — Web App
+# Web App
 
 This is a small web app that takes a picture of a leaf and tells you which
 plant disease it has (40 classes). It uses my fine-tuned DINOv2-Large + LoRA
