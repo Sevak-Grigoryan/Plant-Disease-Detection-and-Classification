@@ -1,0 +1,65 @@
+======================================================================
+FINAL TEST RESULTS
+======================================================================
+
+Total Parameters         : 151,594,921
+Trainable Parameters     : 317,608
+
+Best Validation Accuracy : 0.7993
+Best Validation ROC-AUC  : 0.9877
+
+Test Accuracy            : 0.7725
+Test Loss                : 1.3962
+Test ROC-AUC             : 0.9835
+
+======================================================================
+CLASSIFICATION REPORT
+======================================================================
+
+                                     precision    recall  f1-score   support
+
+               alternaria_leaf_spot     0.8889    0.8000    0.8421        10
+                  angular_leaf_spot     0.7778    0.7000    0.7368        10
+                        anthracnose     0.8000    0.8000    0.8000        10
+                bacterial_leaf_spot     0.6667    0.4000    0.5000        10
+bacterial_leaf_streak_(black_chaff)     0.5000    0.3000    0.3750        10
+                     bacterial_wilt     0.7500    0.9000    0.8182        10
+                       berry_blotch     0.8333    1.0000    0.9091        10
+                  black_leaf_streak     1.0000    1.0000    1.0000        10
+                          black_rot     0.7273    0.8000    0.7619        10
+                          brown_rot     1.0000    0.8000    0.8889        10
+                         brown_spot     0.8571    0.6000    0.7059        10
+                         bunchy_top     1.0000    0.9000    0.9474        10
+                             canker     0.7273    0.8000    0.7619        10
+                       downy_mildew     0.6000    0.6000    0.6000        10
+                       early_blight     0.7778    0.7000    0.7368        10
+                 frog_eye_leaf_spot     0.9000    0.9000    0.9000        10
+                     gray_leaf_spot     0.8000    0.8000    0.8000        10
+                   greening_disease     0.9000    0.9000    0.9000        10
+                          head_scab     0.8182    0.9000    0.8571        10
+                        late_blight     0.7778    0.7000    0.7368        10
+                          leaf_curl     1.0000    1.0000    1.0000        10
+                          leaf_mold     0.8000    0.8000    0.8000        10
+                          leaf_rust     0.7000    0.7000    0.7000        10
+                          leaf_spot     0.5000    0.5000    0.5000        10
+                         loose_smut     1.0000    0.9000    0.9474        10
+                             mosaic     0.7500    0.9000    0.8182        10
+                       mosaic_virus     0.6667    0.6000    0.6316        10
+               northern_leaf_blight     0.6000    0.6000    0.6000        10
+             pepper_blossom_end_rot     1.0000    1.0000    1.0000        10
+              pepper_powdery_mildew     0.7778    0.7000    0.7368        10
+                     powdery_mildew     0.9000    0.9000    0.9000        10
+                               rust     0.3750    0.6000    0.4615        10
+                               scab     0.6000    0.9000    0.7200        10
+                    septoria_blotch     0.6000    0.9000    0.7200        10
+                 septoria_leaf_spot     0.7000    0.7000    0.7000        10
+                      sheath_blight     0.7143    0.5000    0.5882        10
+                               smut     0.9091    1.0000    0.9524        10
+                          stem_rust     1.0000    0.6000    0.7500        10
+                        stripe_rust     0.6923    0.9000    0.7826        10
+                           tar_spot     1.0000    0.9000    0.9474        10
+
+                           accuracy                         0.7725       400
+                          macro avg     0.7847    0.7725    0.7709       400
+                       weighted avg     0.7847    0.7725    0.7709       400
+

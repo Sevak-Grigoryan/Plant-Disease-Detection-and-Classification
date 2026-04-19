@@ -1,0 +1,7 @@
+{
+  "test_loss": 1.4885019616382877,
+  "test_accuracy": 0.7385670731707317,
+  "num_test_samples": 1284,
+  "num_classes": 40,
+  "device": "cpu"
+}

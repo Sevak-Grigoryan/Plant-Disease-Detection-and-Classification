@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DINOv2 Plant Disease App</title>
+  <style>
+    :root {
+      --bg: #0b1220;
+      --panel: rgba(15, 23, 42, 0.82);
+      --text: #e5eefc;
+      --muted: #9fb0cc;
+      --accent: #7dd3fc;
+      --accent-2: #34d399;
+      --border: rgba(148, 163, 184, 0.18);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Segoe UI, system-ui, sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      background: linear-gradient(160deg, #06101d 0%, #0b1220 50%, #111827 100%);
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+    .card {
+      width: min(1100px, 100%);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      padding: 24px;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: var(--panel);
+      backdrop-filter: blur(16px);
+    }
+    .panel {
+      border-radius: 20px;
+      padding: 20px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    h1 { margin: 0 0 8px; font-size: clamp(2rem, 4vw, 3.6rem); line-height: 1; }
+    p { color: var(--muted); line-height: 1.6; }
+    .dropzone {
+      position: relative;
+      min-height: 280px;
+      border-radius: 18px;
+      border: 1.5px dashed rgba(125, 211, 252, 0.45);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .dropzone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .dropzone img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: none; }
+    .controls { margin-top: 16px; display: grid; gap: 10px; }
+    .controls input[type="range"] { width: 100%; accent-color: var(--accent); }
+    button {
+      margin-top: 16px;
+      width: 100%;
+      border: 0;
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #04111f;
+      background: linear-gradient(135deg, var(--accent), #a7f3d0);
+    }
+    .result { font-size: 1.5rem; font-weight: 800; margin-top: 10px; }
+    .pill { display: inline-block; margin-top: 10px; padding: 8px 12px; border-radius: 999px; background: rgba(52,211,153,0.14); color: #86efac; font-weight: 700; }
+    .topk-item { margin-top: 12px; padding: 12px 14px; border-radius: 14px; background: rgba(255,255,255,0.04); }
+    .bar { height: 10px; border-radius: 999px; background: rgba(148,163,184,0.15); overflow: hidden; margin-top: 8px; }
+    .bar span { display: block; height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
+    @media (max-width: 900px) { .card { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <section class="panel">
+      <span style="color: var(--accent); text-transform: uppercase; letter-spacing: .12em; font-size: .78rem;">DINOv2 Best Model</span>
+      <h1>Plant Disease Predictor</h1>
+      <p>Upload a leaf image and get the predicted disease with confidence percentages from the best DINO checkpoint.</p>
+      <label class="dropzone" id="dropzone">
+        <input id="imageInput" type="file" accept="image/*" />
+        <div id="dropCopy">
+          <strong>Choose or drop an image</strong><br />
+          <span style="color: var(--muted)">JPG, PNG, WEBP supported</span>
+        </div>
+        <img id="preview" alt="Preview" />
+      </label>
+      <div class="controls">
+        <label for="topK">Top K predictions</label>
+        <input id="topK" type="range" min="1" max="5" value="5" />
+        <div style="display:flex; justify-content:space-between; color:var(--muted)"><span>1</span><strong id="topKValue">5</strong><span>5</span></div>
+      </div>
+      <button id="predictBtn">Predict disease</button>
+    </section>
+
+    <section class="panel">
+      <div id="statusLine" style="color:var(--muted)">Waiting for image upload.</div>
+      <div class="result" id="predictedClass">No prediction yet</div>
+      <div class="pill" id="confidencePill">0%</div>
+      <div id="topKList"></div>
+    </section>
+  </main>
+
+  <script>
+    const imageInput = document.getElementById('imageInput');
+    const preview = document.getElementById('preview');
+    const dropCopy = document.getElementById('dropCopy');
+    const predictBtn = document.getElementById('predictBtn');
+    const topK = document.getElementById('topK');
+    const topKValue = document.getElementById('topKValue');
+    const topKList = document.getElementById('topKList');
+    const predictedClass = document.getElementById('predictedClass');
+    const confidencePill = document.getElementById('confidencePill');
+    const statusLine = document.getElementById('statusLine');
+    const dropzone = document.getElementById('dropzone');
+    let selectedFile = null;
+
+    topK.addEventListener('input', () => topKValue.textContent = topK.value);
+
+    function renderTopK(items) {
+      topKList.innerHTML = '';
+      items.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'topk-item';
+        div.innerHTML = `
+          <div style="display:flex; justify-content:space-between; gap:12px; font-weight:600;">
+            <span>${index + 1}. ${item.class_name}</span>
+            <span>${(item.confidence * 100).toFixed(2)}%</span>
+          </div>
+          <div class="bar"><span style="width:${(item.confidence * 100).toFixed(2)}%"></span></div>
+        `;
+        topKList.appendChild(div);
+      });
+    }
+
+    imageInput.addEventListener('change', () => {
+      const file = imageInput.files && imageInput.files[0];
+      if (!file) return;
+      selectedFile = file;
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        preview.src = event.target.result;
+        preview.style.display = 'block';
+        dropCopy.style.display = 'none';
+      };
+      reader.readAsDataURL(file);
+      statusLine.textContent = `Selected ${file.name}`;
+    });
+
+    dropzone.addEventListener('dragover', (event) => event.preventDefault());
+    dropzone.addEventListener('drop', (event) => {
+      event.preventDefault();
+      const file = event.dataTransfer.files[0];
+      if (!file) return;
+      selectedFile = file;
+      imageInput.files = event.dataTransfer.files;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        preview.src = e.target.result;
+        preview.style.display = 'block';
+        dropCopy.style.display = 'none';
+      };
+      reader.readAsDataURL(file);
+      statusLine.textContent = `Selected ${file.name}`;
+    });
+
+    predictBtn.addEventListener('click', async () => {
+      if (!selectedFile) {
+        statusLine.textContent = 'Please upload an image first.';
+        return;
+      }
+      predictBtn.disabled = true;
+      statusLine.textContent = 'Running inference...';
+      try {
+        const formData = new FormData();
+        formData.append('file', selectedFile);
+        const response = await fetch(`/api/predict?top_k=${topK.value}`, { method: 'POST', body: formData });
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.detail || 'Prediction failed');
+        }
+        const data = await response.json();
+        predictedClass.textContent = data.predicted_class;
+        confidencePill.textContent = `${(data.confidence * 100).toFixed(2)}% confidence`;
+        renderTopK(data.top_k);
+        statusLine.textContent = 'Prediction complete.';
+      } catch (error) {
+        statusLine.textContent = error.message;
+      } finally {
+        predictBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

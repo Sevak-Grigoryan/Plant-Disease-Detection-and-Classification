@@ -1,0 +1,47 @@
+Final Test Accuracy: 0.9019
+                                     precision    recall  f1-score   support
+
+               alternaria_leaf_spot       0.76      0.84      0.80        19
+                  angular_leaf_spot       0.85      0.89      0.87        19
+                        anthracnose       0.83      0.83      0.83        29
+                bacterial_leaf_spot       0.58      0.93      0.72        15
+bacterial_leaf_streak_(black_chaff)       0.83      0.59      0.69        17
+                     bacterial_wilt       0.95      1.00      0.98        21
+                       berry_blotch       0.84      1.00      0.91        16
+                  black_leaf_streak       1.00      0.91      0.95        22
+                          black_rot       0.82      0.80      0.81        46
+                          brown_rot       0.97      0.97      0.97        33
+                         brown_spot       0.72      0.87      0.79        15
+                         bunchy_top       0.94      1.00      0.97        16
+                             canker       0.98      1.00      0.99        57
+                       downy_mildew       0.96      0.88      0.92       103
+                       early_blight       0.85      0.94      0.89        49
+                 frog_eye_leaf_spot       0.87      0.93      0.90        29
+                     gray_leaf_spot       0.77      0.94      0.85        18
+                   greening_disease       1.00      0.95      0.97        20
+                          head_scab       0.93      0.97      0.95        39
+                        late_blight       0.94      0.92      0.93        36
+                          leaf_curl       0.95      1.00      0.98        20
+                          leaf_mold       0.94      0.94      0.94        16
+                          leaf_rust       0.88      0.97      0.93        38
+                          leaf_spot       0.81      0.69      0.75        32
+                         loose_smut       1.00      0.88      0.94        26
+                             mosaic       0.83      0.83      0.83        18
+                       mosaic_virus       0.94      0.82      0.87        38
+               northern_leaf_blight       0.85      0.81      0.83        21
+             pepper_blossom_end_rot       1.00      1.00      1.00        15
+              pepper_powdery_mildew       0.50      0.67      0.57         3
+                     powdery_mildew       0.98      0.95      0.96       127
+                               rust       0.92      0.90      0.91       109
+                               scab       0.86      0.93      0.90        46
+                    septoria_blotch       0.93      0.96      0.94        26
+                 septoria_leaf_spot       0.50      0.27      0.35        15
+                      sheath_blight       0.81      0.87      0.84        15
+                               smut       0.96      1.00      0.98        23
+                          stem_rust       0.88      1.00      0.94        15
+                        stripe_rust       0.93      0.85      0.89        47
+                           tar_spot       1.00      1.00      1.00        15
+
+                           accuracy                           0.90      1284
+                          macro avg       0.87      0.89      0.88      1284
+                       weighted avg       0.90      0.90      0.90      1284

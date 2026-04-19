@@ -1,0 +1,83 @@
+# ===== Large data directories =====
+data/
+Resized_Data/
+plant_data_clean/
+train_ready_data/
+
+# ===== Model checkpoints & weights =====
+**/checkpoints/
+**/*.pth
+**/*.pt
+**/*.safetensors
+**/*.bin
+**/*.ckpt
+
+# ===== Training results / exports =====
+# Keep small result files (plots, reports, csv, txt); exclude heavy checkpoint dirs
+VIT/DINO_V2/Results/checkpoints/
+VIT/CLIP/Results/checkpoints/
+VIT/DINO_V2/hf_export/
+VIT/CLIP/hf_export/
+
+# ===== Logs =====
+wandb/
+**/wandb/
+*.log
+runs/
+logs/
+
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# ===== Virtual environments =====
+.venv/
+venv/
+env/
+ENV/
+
+# ===== Jupyter =====
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# ===== IDE / Editors =====
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===== Secrets / Environment =====
+.env
+.env.local
+*.key
+*.pem
+
+# ===== Cache =====
+.cache/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
