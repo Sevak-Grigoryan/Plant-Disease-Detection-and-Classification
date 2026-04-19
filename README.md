@@ -6,11 +6,11 @@ The models I tried: EfficientNet, GoogLeNet, MobileNetV3, CLIP + LoRA, and DINOv
 
 ## 1) Project Overview
 
-It's a 40-class image classification problem, with all images resized to 224 x 224. After cleaning and splitting, the final dataset has 6000 training images, 1288 for validation, and 1284 for testing — with no overlap between any of the splits (full breakdown in [`train_ready_data/preprocessing_report.json`](train_ready_data/preprocessing_report.json)).
+It's a 40-class image classification problem, with all images resized to 224 x 224. After cleaning and splitting, the final dataset has 6000 training images, 1288 for validation, and 1284 for testing — with no overlap between any of the splits.
 
 ## 2) Data & Preprocessing
 
-The raw image folders aren't in git — together they're around 2.6 GB, which is too big for GitHub. They come from public plant-disease datasets (PlantVillage, PlantDoc, and a few related ones) that I merged into a single 40-class setup.
+The raw image folders aren't in git — together they're around 2.6 GB, which is too big for GitHub.
 
 If you want to reproduce things locally, you have two options: either drop the raw class folders into `data/train` and `data/val` and run the notebook, or grab the already-prepared split (see below) and skip straight to training.
 

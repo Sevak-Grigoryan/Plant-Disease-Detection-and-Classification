@@ -1,8 +1,12 @@
-# Plant Disease Classifier — Web App
+# Web App
 
 This is a small web app that takes a picture of a leaf and tells you which
 plant disease it has (40 classes). It uses my fine-tuned DINOv2-Large + LoRA
 model, pulled straight from Hugging Face.
+
+- **UI:** [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+- **API docs:** [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+- **Health check:** [http://127.0.0.1:8000/health](http://127.0.0.1:8000/health)
 
 ## Before you start: the model is big
 

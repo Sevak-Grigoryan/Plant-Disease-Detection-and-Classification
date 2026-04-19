@@ -5,10 +5,13 @@ numpy>=1.26
 scikit-learn>=1.4
 matplotlib>=3.8
 tqdm>=4.66
-Pillow>=10.0
+Pillow>=11.0.0
 wandb>=0.16
-transformers>=4.40
+transformers>=4.44,<5.0
 peft>=0.11
+accelerate>=0.30
+huggingface_hub>=0.24.0
+safetensors>=0.4.0
 
 # Inference app
 fastapi==0.116.1
