@@ -127,6 +127,22 @@ CNN and DINOv2 baselines are evaluated on the full project test split (`1284` im
 | MobileNetV3 (SOTA/MobileNET) | 0.7726 | 0.7457 | 0.7693 | 1.3710 | 0.8028 | 1284 | `best epoch=26` in metrics text |
 | GoogLeNet (SOTA/GoogleNET) | 0.7383 | 0.7141 | 0.7361 | 1.4885 | N/A | 1284 | Device recorded as CPU in results |
 
+### Checkpoints on Hugging Face
+
+All experiment checkpoints (EfficientNet, GoogLeNet, MobileNetV3, CLIP + LoRA, DINOv2 + LoRA) are published on the Hugging Face Hub:
+
+**[SevakGrigoryan/plant_diseases_checkpoints](https://huggingface.co/SevakGrigoryan/plant_diseases_checkpoints)**
+
+Download an individual checkpoint with:
+
+```python
+from huggingface_hub import hf_hub_download
+import torch
+
+path = hf_hub_download("SevakGrigoryan/plant_diseases_checkpoints", "efficientnet/best.pth")
+state = torch.load(path, map_location="cpu")
+```
+
 ### Result Files by Model
 
 - DINOv2 + LoRA:
