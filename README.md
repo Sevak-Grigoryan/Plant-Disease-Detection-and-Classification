@@ -31,10 +31,6 @@ jupyter notebook Data_Processing.ipynb
 
 Once that's done, any `train.py` in the repo will just work — they all resolve paths from the repo root.
 
-### Prepared split download
-
-Since the data isn't in git, I'll be uploading a mirror of the final `train_ready_data/` split to Hugging Face / Kaggle (links coming once it's up). Just drop the folder at the repo root as `./train_ready_data/`.
-
 ## 3) Structured Repository Layout
 
 ```text
