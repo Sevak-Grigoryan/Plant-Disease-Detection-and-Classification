@@ -12,7 +12,7 @@ It's a 40-class image classification problem, with all images resized to 224 x 2
 
 The raw image folders aren't in git — together they're around 2.6 GB, which is too big for GitHub.
 
-If you want to reproduce things locally, you have two options: either drop the raw class folders into `data/train` and `data/val` and run the notebook, or grab the already-prepared split (see below) and skip straight to training.
+If you want to reproduce things locally, you have two options: either drop the raw class folders into `data/train` and `data/val` and run the notebook, or grab the already-prepared split and skip straight to training.
 
 ### `Data_Processing.ipynb`
 
