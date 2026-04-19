@@ -8,7 +8,7 @@ from fastapi import FastAPI, File, HTTPException, Query, UploadFile
 from fastapi.responses import HTMLResponse, JSONResponse
 from PIL import Image, UnidentifiedImageError
 from pydantic import BaseModel, Field
-from transformers import AutoImageProcessor, AutoModel
+from transformers import AutoImageProcessor, AutoModel, __version__ as transformers_version
 
 HF_REPO_ID = os.getenv("HF_REPO_ID", "SevakGrigoryan/dinov2-large-plant-disease")
 HF_TOKEN = os.getenv("HF_TOKEN")
@@ -40,7 +40,6 @@ class HealthResponse(BaseModel):
     device: str = Field(..., description='"cuda" or "cpu"')
     repo_id: str = Field(..., description="Hugging Face repo the model was loaded from")
     classes_count: int
-    error: str | None = Field(default=None, description="Startup error, if any")
 
 tags_metadata = [
     {"name": "ui", "description": "Browser UI."},
@@ -65,10 +64,16 @@ app = FastAPI(
 model = None
 processor = None
 class_names: list[str] = []
-startup_error: str | None = None
 
 def load_model_from_hub() -> None:
     global model, processor, class_names
+
+    major_version = int(transformers_version.split(".")[0])
+    if major_version >= 5:
+        raise RuntimeError(
+            "Incompatible transformers version detected "
+            f"({transformers_version}). Please install transformers<5."
+        )
 
     print(f"Loading model from HF Hub: {HF_REPO_ID}")
     processor_local = AutoImageProcessor.from_pretrained(HF_REPO_ID, token=HF_TOKEN)
@@ -86,15 +91,10 @@ def load_model_from_hub() -> None:
 
 @app.on_event("startup")
 def startup_event() -> None:
-    global startup_error
     try:
         load_model_from_hub()
-        startup_error = None
     except Exception as exc:
-        import traceback
-        startup_error = f"{type(exc).__name__}: {exc}"
-        print(f"Startup model load failed: {startup_error}")
-        traceback.print_exc()
+        print(f"Startup model load failed: {exc}")
 
 def predict_image(image: Image.Image, top_k: int) -> PredictionResponse:
     if model is None or processor is None:
@@ -147,7 +147,6 @@ def health() -> HealthResponse:
         device=str(DEVICE),
         repo_id=HF_REPO_ID,
         classes_count=len(class_names),
-        error=startup_error,
     )
 
 @app.get(
@@ -179,10 +178,7 @@ async def api_predict(
     top_k: int = Query(default=5, ge=1, le=20, description="Number of top predictions to return"),
 ) -> PredictionResponse:
     if model is None:
-        detail = "Model is not loaded."
-        if startup_error:
-            detail += f" Startup error: {startup_error}"
-        raise HTTPException(status_code=503, detail=detail)
+        raise HTTPException(status_code=503, detail="Model is not loaded. Check /health.")
 
     try:
         contents = await file.read()
